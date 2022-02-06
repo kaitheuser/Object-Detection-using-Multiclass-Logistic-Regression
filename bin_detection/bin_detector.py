@@ -5,12 +5,13 @@ ECE276A WI22 PR1: Color Classification and Recycling Bin Detection
 from audioop import bias
 import numpy as np
 import cv2
-#from matplotlib import pyplot as plt
-#import matplotlib
-#matplotlib.use('Qt5Agg')
 from skimage.measure import label, regionprops
 import os
 import copy
+"""Comment the library below for autograder"""
+from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('Qt5Agg')
 
 class BinDetector():
 	def __init__(self, lr = 0.1, max_iters = 5000, err_tol = 1e-3, bias = 1):
@@ -82,6 +83,7 @@ class BinDetector():
         2.79470392, -1.17915166, -1.44120635])]
 		
 		
+		
 		"""
 		# (Autograder: 8.25 , Local: 10)
 		self.weights = [np.array([ -0.0356813 ,  -9.22751274,  -6.75686698,   7.78064151,
@@ -118,7 +120,7 @@ class BinDetector():
 		# Normalize the pixel values
 		magic_color_data[:, :-1] = magic_color_data[:, :-1].astype(np.float64)/255
 		# Add bias term
-		magic_color_data = np.insert(magic_color_data, 0, self.bias, axis = 1)
+		#magic_color_data = np.insert(magic_color_data, 0, self.bias, axis = 1)
 
 		# Mix RGB and HSV Color Space [Bias, R, G, B, H, S, V, label]
 		#magic_color_data_RGB_HSV = np.zeros((magic_color_data.shape[0],11))
@@ -142,6 +144,7 @@ class BinDetector():
 		self.train(magic_color_data)
 		#self.train(sorted_compressed_full_color_data)
 	"""
+
 	
     	
 	# Define sigmoid function
@@ -160,6 +163,9 @@ class BinDetector():
     	# Extract X_train features and y_train labels
 		self.X_train = dataset[:, :-1]
 		self.y_train = dataset[:,-1]
+
+		# Add bias term #
+		self.X_train = np.insert(self.X_train, 0, self.bias, axis = 1)
 
     	# Number of samples and features
 		num_Samples, num_Features = self.X_train.shape
@@ -299,7 +305,7 @@ class BinDetector():
 		# Plot mask image
 		#plt.imshow(mask_img)
 		#plt.show()
-		# Replace this with your own approach 
+		# Replace this with your own approach  
 		#mask_img = img
 		
 		# YOUR CODE BEFORE THIS LINE
@@ -367,3 +373,51 @@ class BinDetector():
 		################################################################
 		
 		return boxes
+
+	def draw_bounding_boxes(self, mask_img, boxes, rgb_img):
+		'''
+		Draw bounding boxes and display the image.
+			
+		Inputs:
+			rgb_img - rgb image
+			boxes   - bounding boxes coordinates (top left and bottom right)
+			mask_img - mask image
+		Outputs:
+			None
+		'''
+		# Get the image shape
+		img_height, img_width, _ = rgb_img.shape
+
+		# Initialize a mask
+		mask_img_3D = np.zeros((img_height,img_width, 3)) # Black Pixel = 0, White Pixel = 1
+
+		# Unmask the pixel that is a recycling-bin-blue in black and white
+		for height in range(img_height):
+			for width in range(img_width):
+				if mask_img[height, width] == 1:
+					mask_img_3D[height, width,:] = 1
+            
+		# Plot subplots
+		fig, ax = plt.subplots(1, 2, figsize = (8, 8))
+		
+		# Plot mask image without labels
+		ax[0].imshow(mask_img_3D)
+		ax[0].set_yticklabels([])
+		ax[0].set_xticklabels([])
+		ax[0].set_xticks([])
+		ax[0].set_yticks([])
+
+		# Plot RGB image with bounding boxes
+		ax[1].imshow(rgb_img)
+		for box in boxes:
+			bx = (box[0], box[2], box[2], box[0], box[0])
+			by = (box[1], box[1], box[3], box[3], box[1])
+			ax[1].plot(bx, by, '-r', linewidth=2.5)
+		ax[1].set_yticklabels([])		
+		ax[1].set_xticklabels([])
+		ax[1].set_xticks([])
+		ax[1].set_yticks([])
+
+		# Show plot in tight layout
+		plt.tight_layout()
+		plt.show()

@@ -72,6 +72,9 @@ class PixelClassifier():
     self.X_train = dataset[:, :-1]
     self.y_train = dataset[:,-1]
 
+    # Add bias term #
+    self.X_train = np.insert(self.X_train, 0, self.bias, axis = 1)
+
     # Number of samples and features
     num_Samples, num_Features = self.X_train.shape
 

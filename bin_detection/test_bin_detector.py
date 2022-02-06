@@ -49,6 +49,7 @@ if __name__ == '__main__':
       # read one test image
       #filename = "0062.jpg"
       img = cv2.imread(os.path.join(folder,filename))
+      img_RGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
       # load ground truth label
       with open(os.path.join(folder,os.path.splitext(filename)[0]+'.txt'), 'r') as stream:
@@ -69,6 +70,11 @@ if __name__ == '__main__':
 
       # detect recycling bins
       estm_boxes = my_detector.get_bounding_boxes(mask_img)
+
+      # Display rgb image with bounding box and display segmented image
+      my_detector.draw_bounding_boxes(mask_img, estm_boxes, img_RGB)
+      # Print bounding box list
+      print(estm_boxes)
       
       # The autograder checks your answers to the functions segment_image() and get_bounding_box()
       
