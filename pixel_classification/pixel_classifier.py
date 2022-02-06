@@ -5,6 +5,7 @@ ECE276A WI22 PR1: Color Classification and Recycling Bin Detection
 import numpy as np
 from pixel_classification.generate_rgb_data import read_pixels
 import copy
+import time
 
 class PixelClassifier():
 
@@ -20,6 +21,7 @@ class PixelClassifier():
     self.bias = bias                  # Bias, b for the function of x (linear model)
     self.color_class = None           # Class of Interest to Train
 
+    
     ### For autograder
     # Weight and Color Class Parameters
     
@@ -27,32 +29,33 @@ class PixelClassifier():
                     np.array([-1.15572251, -4.80800263,  8.14250506, -4.27653186]), 
                     np.array([-1.17755687, -4.80183284, -4.29106499,  8.09508523])]
     self.color_class = np.array([1, 2, 3])
+    
 
+    """
     ### Load Normalized Training Dataset
     # Data directory
-    #folder  = 'pixel_classification/data/training'
+    folder  = 'pixel_classification/data/training'
 
     # Training images (N x 3)
-    #X_red_train = read_pixels(folder + '/red')
-    #X_green_train = read_pixels(folder + '/green')
-    #X_blue_train = read_pixels(folder + '/blue')
+    X_red_train = read_pixels(folder + '/red')
+    X_green_train = read_pixels(folder + '/green')
+    X_blue_train = read_pixels(folder + '/blue')
     # Combine the training images (3N x 3)
-    #X_train = np.concatenate((X_red_train, X_green_train, X_blue_train))
-    # Add bias term
-    #X_train = np.insert(X_train, 0, self.bias, axis = 1)
+    X_train = np.concatenate((X_red_train, X_green_train, X_blue_train))
   
     # Training labels (N x 1)
-    #y_red_train = np.full(X_red_train.shape[0],1)
-    #y_green_train = np.full(X_green_train.shape[0], 2)
-    #y_blue_train = np.full(X_blue_train.shape[0],3)
+    y_red_train = np.full(X_red_train.shape[0],1)
+    y_green_train = np.full(X_green_train.shape[0], 2)
+    y_blue_train = np.full(X_blue_train.shape[0],3)
     # Combine the training labels (3N x 1)
-    #y_train = np.concatenate((y_red_train, y_green_train, y_blue_train)).reshape(-1, 1)
+    y_train = np.concatenate((y_red_train, y_green_train, y_blue_train)).reshape(-1, 1)
 
     # Compiled Dataset
-    #dataset = np.concatenate((X_train, y_train), axis = 1)
+    dataset = np.concatenate((X_train, y_train), axis = 1)
 
     # Train dataset
-    #self.train(dataset)
+    self.train(dataset)
+  """
     
 
   # Define sigmoid function
@@ -115,6 +118,7 @@ class PixelClassifier():
 
         # If less than the error tolerance, break the loop to prevent overtraining/overfitting (early stopping)
         if np.linalg.norm(prev_weight - weight) < self.err_tol:
+          #sprint(idx)
           break
 
       # Append the trained weight

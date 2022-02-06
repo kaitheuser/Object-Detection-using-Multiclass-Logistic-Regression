@@ -72,9 +72,9 @@ if __name__ == '__main__':
       estm_boxes = my_detector.get_bounding_boxes(mask_img)
 
       # Display rgb image with bounding box and display segmented image
-      my_detector.draw_bounding_boxes(mask_img, estm_boxes, img_RGB)
+      #my_detector.draw_bounding_boxes(mask_img, estm_boxes, img_RGB)
       # Print bounding box list
-      print(estm_boxes)
+      #print(estm_boxes)
       
       # The autograder checks your answers to the functions segment_image() and get_bounding_box()
       

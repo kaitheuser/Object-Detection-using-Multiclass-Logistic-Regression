@@ -8,6 +8,7 @@ from __future__ import division
 from generate_rgb_data import read_pixels
 from pixel_classifier import PixelClassifier
 
+
 if __name__ == '__main__':
   # test the classifier
   
@@ -18,5 +19,3 @@ if __name__ == '__main__':
   y = myPixelClassifier.classify(X)
   
   print('Precision: %f' % (sum(y==3)/y.shape[0]))
-
-  print(X.shape, y.shape)
