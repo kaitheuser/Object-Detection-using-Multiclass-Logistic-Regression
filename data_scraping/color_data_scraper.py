@@ -17,7 +17,7 @@ if __name__ == '__main__':
     """
         Customizable variable to decide where to start scrapping color data [1 - 60]
     """
-    start_ID = 12
+    start_ID = 1
 
     for ID, filename in enumerate(train_imgs):
 

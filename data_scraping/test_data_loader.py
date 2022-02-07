@@ -22,10 +22,6 @@ for ID, filename in enumerate(color_data_files):
     if ID == 0:
 
         continue
-
-    if ID == 6:
-
-        break
 			
 	# Training images (Number of Pixels x Number of Features)	
     with open(folder + filename) as file_name:
@@ -35,4 +31,5 @@ for ID, filename in enumerate(color_data_files):
     color_data = np.vstack((color_data, new_data))
 
 # Save as csv file to "data_scraping/compiled_color_data/"
-np.savetxt(save_dir + 'magic_color_tridata.csv', color_data, delimiter=",")
+#np.savetxt(save_dir + 'magic_color_tridata.csv', color_data, delimiter=",")
+np.savetxt(save_dir + 'TA_color_data.csv', color_data, delimiter=",")
